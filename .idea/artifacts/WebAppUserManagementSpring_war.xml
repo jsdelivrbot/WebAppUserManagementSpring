@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="WebAppUserManagementSpring:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="WebAppUserManagementSpring.war">
+      <element id="artifact" artifact-name="WebAppUserManagementSpring:war exploded" />
+    </root>
+  </artifact>
+</component>
