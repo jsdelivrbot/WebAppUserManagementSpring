@@ -76,7 +76,7 @@
 
     <div class="form-group">
         <label >Skills</label>
-                    <select onchange="addSkill(this)" id="updateSkill" cssClass="form-control">
+                    <select onchange="addSkill(this)" id="updateSkill" class="form-control">
                         <c:forEach items="${skills}" var="resultSkills">
                             <c:set var="disabled"  value=""></c:set>
 
@@ -86,7 +86,7 @@
                                 </c:if>
                             </c:forEach>
 
-                            <option value="${resultSkills.id}" ${disabled}>${resultSkills.skillname}</option>
+                            <option value="${resultSkills.id}" ${disabled} >${resultSkills.skillname}</option>
                         </c:forEach>
                     </select>
 

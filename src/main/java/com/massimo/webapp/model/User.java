@@ -50,14 +50,18 @@ public class User implements Serializable {
 
     private Set<Skill> skills = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private Set<UserDocument> userDocuments = new HashSet<UserDocument>();
 
-    public User(String firstname, String lastname, String country, Date birthDate, MaritalStatus maritalStatus, Set<Skill> skills) {
+
+    public User(String firstname, String lastname, String country, Date birthDate, MaritalStatus maritalStatus, Set<Skill> skills, Set<UserDocument> userDocuments) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.country = country;
         this.birthDate = birthDate;
         this.maritalStatus = maritalStatus;
         this.skills = skills;
+        this.userDocuments=userDocuments;
     }
 
     public User() {
@@ -120,6 +124,14 @@ public class User implements Serializable {
         this.skills = skills;
     }
 
+    public Set<UserDocument> getUserDocuments() {
+        return userDocuments;
+    }
+
+    public void setUserDocuments(Set<UserDocument> userDocuments) {
+        this.userDocuments = userDocuments;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -164,6 +176,11 @@ public class User implements Serializable {
                 return false;
         } else if (!skills.equals(other.skills))
             return false;
+        if (userDocuments == null) {
+            if (other.userDocuments != null)
+                return false;
+        } else if (!userDocuments.equals(other.userDocuments))
+            return false;
         return true;
     }
 
@@ -177,6 +194,7 @@ public class User implements Serializable {
                 ", birthDate=" + birthDate +
                 ", maritalStatus=" + maritalStatus +
                 ", skills=" + skills +
+                ", userDocuments=" + userDocuments +
                 '}';
     }
 }

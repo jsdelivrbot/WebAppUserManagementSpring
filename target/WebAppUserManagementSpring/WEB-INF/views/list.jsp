@@ -39,6 +39,7 @@
         </c:if>
         </span>
 
+
 </nav>
 <div class="container-fluid">
     <div class="panel panel-default">
@@ -57,6 +58,7 @@
             <th>Marital Status</th>
             <th>Skills</th>
             <th>Operations</th>
+            <th>File</th>
         </tr>
     </thead>
     <tbody>
@@ -78,7 +80,62 @@
             </c:forEach>
             </td>
             <td><a href="<c:url value="edit-user-${user.id}"/>" class="btn btn-raised btn-warning">Edit</a>
-            <button type="button" class="btn btn-raised btn-danger" onclick="confirmDelete(${user.id})" id="deleteButton">Delete</button></td>
+            <button type="button" class="btn btn-raised btn-danger" onclick="confirmDelete(${user.id})" id="deleteButton">Delete</button>
+            </td>
+            <td>
+                <c:if test="${user.userDocuments.isEmpty()}">
+                    <a href="<c:url value="add-document-${user.id}"/>" class="btn btn-raised btn-info">Upload</a>
+                </c:if>
+
+                <c:forEach items="${user.userDocuments}" var="docList">
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${docList.name}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="buttonMenu1">
+                            <a href="<c:url value="edit-document-${docList.id}"/>" class="dropdown-item" style="color:orangered">Edit</a>
+                            <a class="dropdown-item" onclick="confirmDocumentDelete(${docList.id})" style="color:red">Delete</a>
+                            <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal">Info</a>
+                            <a href="<c:url value="download-document-${docList.id}"/>" class="dropdown-item" style="color:blue">Download File</a>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Info on File</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table align="center">
+                                        <thead>
+                                            <tr>
+                                                <td><b>Nome</b></td>
+                                                <td><b>Descrizione</b></td>
+                                                <td><b>Tipo</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>${docList.name}</td>
+                                                <td>${docList.description}</td>
+                                                <td>${docList.type}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </c:forEach>
+
+            </td>
         </tr>
         </c:forEach>
 
@@ -102,6 +159,21 @@
         }
 
     }
+
+    function confirmDocumentDelete(docId){
+        var confirmation = confirm("Are you sure to delete document?");
+
+        if(confirmation==true){
+            window.location.href = "delete-document-"+docId;
+            alert("Document deleted!");
+        }
+    }
+
+    function showInfos(name, description, type){
+
+    }
+
+
 </script>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="https://cdn.rawgit.com/HubSpot/tether/v1.3.4/dist/js/tether.min.js"></script>
