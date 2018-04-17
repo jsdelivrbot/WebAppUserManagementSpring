@@ -31,16 +31,17 @@
             <input type="text" class="form-control" size="40" maxlength="40" name="term" placeholder="Search for firstname, lastname or country"/></br>
         </div>
         <span class="form-group bmd-form-group">
-            <input type="submit" class="btn btn-raised btn-info" value="Search">
+            <input type="submit" class="btn btn-outline-info" value="Search">
 
         </form:form>
         <c:if test="${reset==true}">
-            <a href="/"> <button class="btn btn-raised btn-danger" value="Clear">Clear</button></a>
+            <a href="/"> <button class="btn btn-outline-danger" value="Clear">Clear</button></a>
         </c:if>
         </span>
 
 
 </nav>
+
 <div class="container-fluid">
     <div class="panel panel-default">
         <!-- Default panel contents -->
@@ -100,7 +101,7 @@
                         </div>
                     </div>
 
-                    <!-- Modal -->
+                    <!-- Modal INFO-->
                     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -114,9 +115,9 @@
                                     <table align="center">
                                         <thead>
                                             <tr>
-                                                <td><b>Nome</b></td>
-                                                <td><b>Descrizione</b></td>
-                                                <td><b>Tipo</b></td>
+                                                <td><b>Name</b></td>
+                                                <td><b>Description</b></td>
+                                                <td><b>Type</b></td>
                                             </tr>
                                         </thead>
                                         <tbody>
