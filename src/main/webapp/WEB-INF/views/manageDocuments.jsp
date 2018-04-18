@@ -7,13 +7,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Upload/Download/Delete Documents</title>
-    <!-- Material Design fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.min.css">
-
+    <%@include file="_links.jsp"%>
 </head>
 
 <body>
@@ -25,6 +19,14 @@
         <div class="uploadcontainer">
             <form:form method="POST" modelAttribute="fileBucket" enctype="multipart/form-data" class="form-horizontal">
 
+                <c:if test="${errorFile}" var="errorFile">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
+                        <strong>${notifications.type}!</strong> ${notifications.message}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </c:if>
                 <div class="form-group ${error}">
                     <label>Upload a document</label>
                             <form:input type="file" path="file" id="file" class="form-control input-sm"/>
@@ -61,14 +63,13 @@
     </div>
 </div>
 
+<!-- INCLUDE SCRIPTS -->
+<%@include file="_scriptsFooter.jsp"%>
 
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="https://cdn.rawgit.com/HubSpot/tether/v1.3.4/dist/js/tether.min.js"></script>
-<script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+<!-- FOR ALERTS -->
+<!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
 <script>
-    $('body').bootstrapMaterialDesign();
+    $("#error-alert").fadeTo(3000, 500).slideUp(500);
 </script>
 </body>
 </html>

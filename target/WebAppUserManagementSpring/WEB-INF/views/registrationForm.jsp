@@ -13,21 +13,48 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>User Registration Form</title>
-    <!-- Material Design fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.min.css">
-
+    <%@include file="_links.jsp"%>
 </head>
 <body>
 <div class="container-fluid">
+
     <div class="well lead"><b>User Registration Form</b></div>
     <form:form modelAttribute="user" method="POST" class="form-horizontal">
         <form:input path="id" id="id" type="hidden"></form:input>
 
+        <!-- NOTIFICATIONS -->
+        <c:if test="${errorNotificationFirst==true}">
 
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
+                <strong>${notificationsFirst.type}!</strong> ${notificationsFirst.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        </c:if>
+        <c:if test="${errorNotificationLast==true}">
+
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert1">
+                <strong>${notificationsLast.type}!</strong> ${notificationsLast.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        </c:if>
+        <c:if test="${errorNotificationDate==true}">
+
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert2">
+                <strong>${notificationsDate.type}!</strong> ${notificationsDate.message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        </c:if>
+
+    <!-- FORMS -->
             <div class="form-group ${errorFirst}">
                 <label>Firstname*</label>
                     <form:input path="firstname" type="text" cssClass="form-control" cssErrorClass="form-control form-control-danger"></form:input>
@@ -190,14 +217,20 @@
 
 
     }
+
+
 </script>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="https://cdn.rawgit.com/HubSpot/tether/v1.3.4/dist/js/tether.min.js"></script>
-<script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- INCLUDE SCRIPTS -->
+<%@include file="_scriptsFooter.jsp"%>
+
+<!-- FOR ALERTS -->
+<!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
 <script>
-    $('body').bootstrapMaterialDesign();
+    $("#error-alert").fadeTo(3000, 500).slideUp(500);
+    $("#error-alert1").fadeTo(3000, 500).slideUp(500);
+    $("#error-alert2").fadeTo(3000, 500).slideUp(500);
+
 </script>
 </body>
 </html>

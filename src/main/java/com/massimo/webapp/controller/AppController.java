@@ -1,13 +1,15 @@
 package com.massimo.webapp.controller;
 
+import com.massimo.webapp.notifications.NotificationType;
+import com.massimo.webapp.notifications.Notifications;
 import com.massimo.webapp.model.*;
 import com.massimo.webapp.service.MaritalStatusService;
 import com.massimo.webapp.service.SkillService;
 import com.massimo.webapp.service.UserDocumentService;
 import com.massimo.webapp.service.UserService;
+import com.massimo.webapp.utils.ValidationManager;
 import com.massimo.webapp.validator.FileValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,17 +19,12 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -95,23 +92,22 @@ public class AppController {
    * */
    @RequestMapping(value = "/newUser", method = RequestMethod.POST)
    public String saveUser(@Valid User user, BindingResult result,
-                          ModelMap modelMap){
+                          ModelMap modelMap, RedirectAttributes redirectAttributes){
        if(result.hasErrors()){
-           List<FieldError> errors = result.getFieldErrors();
-           for(FieldError fieldError: errors){
-               if(fieldError.getField().equals("firstname"))
-                   modelMap.addAttribute("errorFirst", "has-danger");
-               if(fieldError.getField().equals("lastname"))
-                   modelMap.addAttribute("errorLast", "has-danger");
-               if(fieldError.getField().equals("birthDate"))
-                   modelMap.addAttribute("errorBirthDate", "has-danger");
-           }
-           modelMap.addAttribute("edit", false);
+
+           //Validate fields for notification
+           ValidationManager.showNotifications(result,modelMap);
            return "registrationForm";
        }
 
 
        userService.saveUser(user);
+
+       //Control parameter
+       String operation = "insertUser";
+       //Validate for insert and notifications
+       ValidationManager.controlOperationAndNotify(operation, redirectAttributes);
+
        return "redirect:/";
    }
 
@@ -138,21 +134,19 @@ public class AppController {
     * */
     @RequestMapping(value = "/edit-user-{id}", method = RequestMethod.POST)
     public String updateUser(@Valid User user, BindingResult result,
-                             ModelMap modelMap, @PathVariable int id){
+                             ModelMap modelMap, @PathVariable int id, RedirectAttributes redirectAttributes){
         if(result.hasErrors()){
-            List<FieldError> errors = result.getFieldErrors();
-            for(FieldError fieldError: errors){
-                if(fieldError.getField().equals("firstname"))
-                    modelMap.addAttribute("errorFirst", "has-danger");
-                if(fieldError.getField().equals("lastname"))
-                    modelMap.addAttribute("errorLast", "has-danger");
-                if(fieldError.getField().equals("birthDate"))
-                    modelMap.addAttribute("errorBirthDate", "has-danger");
-            }
+
+            //Validate for notifications
+            ValidationManager.showNotifications(result,modelMap);
             return "registrationForm";
         }
         userService.updateUser(user);
 
+        //Control parameter
+        String operation = "editUser";
+        //Validate for edit user and notifications
+        ValidationManager.controlOperationAndNotify(operation, redirectAttributes);
         return "redirect:/";
     }
 
@@ -164,8 +158,12 @@ public class AppController {
    * */
 
    @RequestMapping(value = "/delete-user-{id}", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable int id){
+    public String deleteUser(@PathVariable int id, RedirectAttributes redirectAttributes){
        userService.deleteUser(id);
+       //Control parameter
+       String operation = "deleteUser";
+       //Validate for notification
+       ValidationManager.controlOperationAndNotify(operation, redirectAttributes);
        return "redirect:/";
    }
 
@@ -181,6 +179,7 @@ public class AppController {
        List<User> users = userService.searchUsers(search);
        modelMap.addAttribute("users", users);
        modelMap.addAttribute("reset", true);
+       modelMap.addAttribute("resultSize", users.size());
        return "list";
    }
 
@@ -212,10 +211,11 @@ public class AppController {
    * */
 
    @RequestMapping(value = "/add-document-{userId}", method = RequestMethod.POST)
-   public String uploadDocument(@Valid FileBucket fileBucket, BindingResult result, @PathVariable int userId, ModelMap model) throws IOException {
+   public String uploadDocument(@Valid FileBucket fileBucket, BindingResult result,
+                                @PathVariable int userId, ModelMap model, RedirectAttributes redirectAttributes) throws IOException {
        if (result.hasErrors()) {
-           System.out.println("validation errors");
-           model.addAttribute("error", "has-danger");
+
+           ValidationManager.validateFile(model);
 
            return "manageDocuments";
        } else {
@@ -226,6 +226,10 @@ public class AppController {
            model.addAttribute("user", user);
 
            saveDocument(fileBucket, user);
+           //Control parameter
+           String operation = "uploadDocument";
+           //Validation for notify in document upload
+           ValidationManager.controlOperationAndNotify(operation, redirectAttributes);
 
            return "redirect:/";
        }
@@ -272,9 +276,14 @@ public class AppController {
     *
     * */
     @RequestMapping(value = "/delete-document-{docId}", method = RequestMethod.GET)
-    public String deleteDocument(@PathVariable int docId){
+    public String deleteDocument(@PathVariable int docId, RedirectAttributes redirectAttributes){
 
         userDocumentService.deleteById(docId);
+
+        //Control parameter
+        String operation = "deleteDocument";
+        //Validation for notify deleted document
+        ValidationManager.controlOperationAndNotify(operation, redirectAttributes);
         return "redirect:/";
     }
 
@@ -313,10 +322,12 @@ public class AppController {
     * */
     @RequestMapping(value = "/edit-document-{docId}", method = RequestMethod.POST)
     public String updateDocument(@Valid FileBucket fileBucket, BindingResult result,
-                             ModelMap modelMap, @PathVariable int docId) throws IOException {
+                             ModelMap modelMap, @PathVariable int docId,
+                                 RedirectAttributes redirectAttributes) throws IOException {
 
         if (result.hasErrors()) {
             System.out.println("validation errors");
+            ValidationManager.validateFile(modelMap);
             modelMap.addAttribute("error", "has-danger");
 
             return "manageDocuments";
@@ -327,6 +338,10 @@ public class AppController {
 
             userDocumentService.updateDocument(userDocument, fileBucket, file);
 
+            //Control parameter
+            String operation = "editDocument";
+            //Validate for notify updated document
+            ValidationManager.controlOperationAndNotify(operation, redirectAttributes);
             return "redirect:/";
         }
 
