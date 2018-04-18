@@ -315,14 +315,20 @@ public class AppController {
     public String updateDocument(@Valid FileBucket fileBucket, BindingResult result,
                              ModelMap modelMap, @PathVariable int docId) throws IOException {
 
-        UserDocument userDocument = userDocumentService.findById(docId);
+        if (result.hasErrors()) {
+            System.out.println("validation errors");
+            modelMap.addAttribute("error", "has-danger");
 
-        MultipartFile file = fileBucket.getFile();
+            return "manageDocuments";
+        }else {
+            UserDocument userDocument = userDocumentService.findById(docId);
 
-        userDocumentService.updateDocument(userDocument, fileBucket, file);
+            MultipartFile file = fileBucket.getFile();
 
-        return "redirect:/";
+            userDocumentService.updateDocument(userDocument, fileBucket, file);
 
+            return "redirect:/";
+        }
 
     }
 
