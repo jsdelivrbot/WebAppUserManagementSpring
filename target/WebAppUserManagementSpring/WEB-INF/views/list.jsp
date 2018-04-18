@@ -7,39 +7,30 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Users List</title>
-    <!-- Material Design fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.min.css">
-
+   <%@include file="_links.jsp"%>
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-faded">
-    <a class="navbar-brand">Users Management App</a>
-    <ul class="nav navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="<c:url value="/newUser" />"><button class="btn btn-outline-info"> Add New User</button></a>
-        </li>
-    </ul>
+    <%@include file="_navbar.jsp"%>
+<!-- NOTIFICATIONS EDIT, SUCCESS, SAVE -->
+<c:if test="${successMessage==true}">
 
-        <c:url var="searchUrl" value="/users"/>
-        <form:form method="GET" action="${searchUrl}" cssClass="form-inline pull-xs-right">
-        <div class="form-group">
-            <input type="text" class="form-control" size="40" maxlength="40" name="term" placeholder="Search for firstname, lastname or country"/></br>
-        </div>
-        <span class="form-group bmd-form-group">
-            <input type="submit" class="btn btn-raised btn-info" value="Search">
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert" name="success-alert">
+        <strong>${notificationsSuccess.type}!</strong> ${notificationsSuccess.message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
 
-        </form:form>
-        <c:if test="${reset==true}">
-            <a href="/"> <button class="btn btn-raised btn-danger" value="Clear">Clear</button></a>
-        </c:if>
-        </span>
+</c:if>
+<!-- NOTIFICATIONS NO RESULTS FOR SEARCH -->
+<c:if test="${resultSize==0}">
 
-</nav>
+    <div class="alert alert-warning" role="alert">
+        <strong>We're sorry!</strong> No results found.
+    </div>
+
+</c:if>
 <div class="container-fluid">
     <div class="panel panel-default">
         <!-- Default panel contents -->
@@ -57,6 +48,7 @@
             <th>Marital Status</th>
             <th>Skills</th>
             <th>Operations</th>
+            <th>File</th>
         </tr>
     </thead>
     <tbody>
@@ -78,7 +70,61 @@
             </c:forEach>
             </td>
             <td><a href="<c:url value="edit-user-${user.id}"/>" class="btn btn-raised btn-warning">Edit</a>
-            <button type="button" class="btn btn-raised btn-danger" onclick="confirmDelete(${user.id})" id="deleteButton">Delete</button></td>
+            <button type="button" class="btn btn-raised btn-danger" onclick="confirmDelete(${user.id})" id="deleteButton">Delete</button>
+            </td>
+            <td>
+                <c:if test="${user.userDocuments.isEmpty()}">
+                    <a href="<c:url value="add-document-${user.id}"/>" class="btn btn-raised btn-info">Upload</a>
+                </c:if>
+
+                <c:forEach items="${user.userDocuments}" var="docList">
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle" type="button" id="buttonMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${docList.name}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="buttonMenu1">
+                            <a href="<c:url value="edit-document-${docList.id}"/>" class="dropdown-item" style="color:orangered">Edit</a>
+                            <a class="dropdown-item" onclick="confirmDocumentDelete(${docList.id})" style="color:red">Delete</a>
+                            <a class="dropdown-item" style="color:black" data-toggle="modal" data-target="#exampleModal${docList.id}">Info</a>
+                            <a href="<c:url value="download-document-${docList.id}"/>" class="dropdown-item" style="color:blue">Download File</a>
+                        </div>
+                    </div>
+                    <!-- Modal File Infos -->
+                    <div class="modal fade" id="exampleModal${docList.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" align="center">File Infos</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table align="center">
+                                        <thead>
+                                            <tr>
+                                                <td><b>Filename</b></td>
+                                                <td><b>Type</b></td>
+                                                <td><b>Description</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>${docList.name}</td>
+                                                <td>${docList.type}</td>
+                                                <td>${docList.description}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </c:forEach>
+
+            </td>
         </tr>
         </c:forEach>
 
@@ -98,18 +144,33 @@
 
         if(confirmation==true){
             window.location.href = "delete-user-"+userId;
-            alert("User deleted!");
+
         }
 
     }
+
+    function confirmDocumentDelete(docId){
+        var confirmation = confirm("Are you sure to delete document?");
+
+        if(confirmation==true){
+            window.location.href = "delete-document-"+docId;
+
+        }
+    }
+
+
+
 </script>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="https://cdn.rawgit.com/HubSpot/tether/v1.3.4/dist/js/tether.min.js"></script>
-<script src="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.iife.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js"></script>
+
+<!-- INCLUDE SCRIPTS -->
+<%@include file="_scriptsFooter.jsp"%>
+
+<!-- FOR ALERTS -->
+<!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
 <script>
-    $('body').bootstrapMaterialDesign();
+    $("#success-alert").fadeTo(3000, 500).slideUp(500);
 </script>
+
+
 </body>
 </html>

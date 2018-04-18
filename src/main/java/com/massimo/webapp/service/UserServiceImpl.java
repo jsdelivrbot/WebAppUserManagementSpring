@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService{
             userUpdated.setCountry(user.getCountry());
             userUpdated.setMaritalStatus(user.getMaritalStatus());
             userUpdated.setSkills(user.getSkills());
+            userUpdated.setUserDocuments(user.getUserDocuments());
         }
         userRepository.save(userUpdated);
     }
