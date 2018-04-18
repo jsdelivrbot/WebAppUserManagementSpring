@@ -6,3 +6,9 @@
 <script>
     $('body').bootstrapMaterialDesign();
 </script>
+<script>
+    function hideClear(){
+        var btnClear = document.getElementById("clearBtn");
+        btnClear.remove();
+    }
+</script>

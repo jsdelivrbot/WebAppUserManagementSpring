@@ -11,7 +11,7 @@
 </head>
 
 <body>
-
+<%@include file="_navbar.jsp"%>
 <div class="container-fluid">
 
 

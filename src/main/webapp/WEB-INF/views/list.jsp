@@ -11,30 +11,9 @@
 </head>
 
 <body>
-<nav class="navbar navbar-light bg-faded">
-    <a class="navbar-brand">Users Management App</a>
-    <ul class="nav navbar-nav">
-        <li class="nav-item active">
-            <a class="nav-link" href="<c:url value="/newUser" />"><button class="btn btn-outline-info"> Add New User</button></a>
-        </li>
-    </ul>
+    <!-- INCLUDE NAVBAR -->
+    <%@include file="_navbar.jsp"%>
 
-        <c:url var="searchUrl" value="/users"/>
-        <form:form method="GET" action="${searchUrl}" cssClass="form-inline pull-xs-right">
-        <div class="form-group">
-            <input type="text" class="form-control" size="40" maxlength="40" name="term" placeholder="Search for firstname, lastname or country"/></br>
-        </div>
-        <span class="form-group bmd-form-group">
-            <input type="submit" class="btn btn-outline-info" value="Search">
-
-        </form:form>
-        <c:if test="${reset==true}">
-            <a href="/"> <button class="btn btn-outline-danger" value="Clear" name="clearBtn" id="clearBtn" onclick="hideClear()">Clear</button></a>
-        </c:if>
-        </span>
-
-
-</nav>
 <!-- NOTIFICATIONS EDIT, SUCCESS, SAVE -->
 <c:if test="${successMessage==true}">
 
@@ -108,10 +87,42 @@
                         <div class="dropdown-menu" aria-labelledby="buttonMenu1">
                             <a href="<c:url value="edit-document-${docList.id}"/>" class="dropdown-item" style="color:orangered">Edit</a>
                             <a class="dropdown-item" onclick="confirmDocumentDelete(${docList.id})" style="color:red">Delete</a>
+                            <a class="dropdown-item" style="color:black" data-toggle="modal" data-target="#exampleModal${docList.id}">Info</a>
                             <a href="<c:url value="download-document-${docList.id}"/>" class="dropdown-item" style="color:blue">Download File</a>
                         </div>
                     </div>
+                    <!-- Modal File Infos -->
+                    <div class="modal fade" id="exampleModal${docList.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" align="center">File Infos</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table align="center">
+                                        <thead>
+                                            <tr>
+                                                <td><b>Filename</b></td>
+                                                <td><b>Type</b></td>
+                                                <td><b>Description</b></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>${docList.name}</td>
+                                                <td>${docList.type}</td>
+                                                <td>${docList.description}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
 
                 </c:forEach>
 
@@ -161,11 +172,7 @@
 <script>
     $("#success-alert").fadeTo(3000, 500).slideUp(500);
 </script>
-<script>
-    function hideClear(){
-        var btnClear = document.getElementById("clearBtn");
-        btnClear.remove();
-    }
-</script>
+
+
 </body>
 </html>

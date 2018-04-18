@@ -16,6 +16,9 @@
     <%@include file="_links.jsp"%>
 </head>
 <body>
+    <!-- INCLUDE NAVBAR -->
+    <%@include file="_navbar.jsp"%>
+
 <div class="container-fluid">
 
     <div class="well lead"><b>User Registration Form</b></div>

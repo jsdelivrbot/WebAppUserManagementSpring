@@ -6,3 +6,11 @@
 <script>
     $('body').bootstrapMaterialDesign();
 </script>
+
+<!-- FUNCTION PER NASCONDERE IL TASTO CLEAR -->
+<script>
+    function hideClear(){
+        var btnClear = document.getElementById("clearBtn");
+        btnClear.remove();
+    }
+</script>
