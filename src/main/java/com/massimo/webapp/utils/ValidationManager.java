@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationManager {
@@ -20,39 +21,62 @@ public class ValidationManager {
         Notifications notificationsFirst = new Notifications();
         Notifications notificationsLast = new Notifications();
         Notifications notificationsDate = new Notifications();
+        List<Notifications> notificationsList = new ArrayList<>();
 
-        int count = 0;
+        boolean addedFirst = false;
+        boolean addedLast = false;
+        boolean addedDate = false;
 
         for(FieldError fieldError: errors){
             if(fieldError.getField().equals("firstname"))
-                modelMap.addAttribute("errorNotificationFirst",true);
-                modelMap.addAttribute("errorFirst", "has-danger");
+                if(addedFirst==false) {
 
-                //NOTIFICATIONS
-                notificationsFirst.setType(NotificationType.ERROR.toString());
-                notificationsFirst.setMessage("Please control the form! errors on Firstname");
-                modelMap.addAttribute("notificationsFirst", notificationsFirst);
+                    //modelMap.addAttribute("errorNotification", true);
+                    modelMap.addAttribute("errorFirst", "has-danger");
 
+                    //NOTIFICATIONS
+                    notificationsFirst.setType(NotificationType.ERROR.toString());
+                    notificationsFirst.setMessage("Please control the form! errors on Firstname");
+                    //modelMap.addAttribute("notificationsFirst", notificationsFirst);
+
+                    //AGGIUNGO A LISTA
+                    notificationsList.add(notificationsFirst);
+                    modelMap.addAttribute("notificationsList",notificationsList);
+                    addedFirst=true;
+                }
 
             if(fieldError.getField().equals("lastname"))
-                modelMap.addAttribute("errorNotificationLast",true);
-                modelMap.addAttribute("errorLast", "has-danger");
+                if(addedLast==false) {
+                    //modelMap.addAttribute("errorNotification", true);
+                    modelMap.addAttribute("errorLast", "has-danger");
 
-                //NOTIFICATIONS
-                notificationsLast.setType(NotificationType.ERROR.toString());
-                notificationsLast.setMessage("Please control the form! errors on Lastname");
-                modelMap.addAttribute("notificationsLast", notificationsLast);
+                    //NOTIFICATIONS
+                    notificationsLast.setType(NotificationType.ERROR.toString());
+                    notificationsLast.setMessage("Please control the form! errors on Lastname");
+                    //modelMap.addAttribute("notificationsLast", notificationsLast);
+
+                    //AGGIUNGO A LISTA
+                    notificationsList.add(notificationsLast);
+                    modelMap.addAttribute("notificationsList",notificationsList);
+                    addedLast=true;
+                }
 
             if(fieldError.getField().equals("birthDate"))
-                modelMap.addAttribute("errorNotificationDate",true);
-                modelMap.addAttribute("errorBirthDate", "has-danger");
+                if(addedDate==false) {
 
-                //NOTIFICATIONS
-                notificationsDate.setType(NotificationType.ERROR.toString());
-                notificationsDate.setMessage("Please control the form! errors on Date");
-                modelMap.addAttribute("notificationsDate", notificationsDate);
+                    modelMap.addAttribute("errorBirthDate", "has-danger");
 
+                    //NOTIFICATIONS
+                    notificationsDate.setType(NotificationType.ERROR.toString());
+                    notificationsDate.setMessage("Please control the form! errors on Date");
+                    //modelMap.addAttribute("notificationsDate", notificationsDate);
 
+                    //AGGIUNGO A LISTA
+                    notificationsList.add(notificationsDate);
+                    modelMap.addAttribute("notificationsList",notificationsList);
+                    addedDate=true;
+                }
+            modelMap.addAttribute("errorNotification", true);
         }
         modelMap.addAttribute("edit", false);
     }

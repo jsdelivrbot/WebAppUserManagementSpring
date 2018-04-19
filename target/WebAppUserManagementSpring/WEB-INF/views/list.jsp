@@ -11,7 +11,9 @@
 </head>
 
 <body>
+    <!-- INCLUDE NAVBAR -->
     <%@include file="_navbar.jsp"%>
+
 <!-- NOTIFICATIONS EDIT, SUCCESS, SAVE -->
 <c:if test="${successMessage==true}">
 

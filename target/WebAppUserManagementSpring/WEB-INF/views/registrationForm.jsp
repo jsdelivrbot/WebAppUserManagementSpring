@@ -14,46 +14,35 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>User Registration Form</title>
     <%@include file="_links.jsp"%>
+    
 </head>
 <body>
-<%@include file="_navbar.jsp"%>
+    <!-- INCLUDE NAVBAR -->
+    <%@include file="_navbar.jsp"%>
+
 <div class="container-fluid">
 
     <div class="well lead"><b>User Registration Form</b></div>
     <form:form modelAttribute="user" method="POST" class="form-horizontal">
         <form:input path="id" id="id" type="hidden"></form:input>
 
-        <!-- NOTIFICATIONS -->
-        <c:if test="${errorNotificationFirst==true}">
+        <!-- NOTIFICATIONS LIST -->
+        <c:if test="${errorNotification==true}">
+            <c:set var="count" value="0"></c:set>
 
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
-                <strong>${notificationsFirst.type}!</strong> ${notificationsFirst.message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+            <c:forEach items="${notificationsList}" var="notificationsList">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert${count}">
+                    <strong>${notificationsList.type}!</strong> ${notificationsList.message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <c:set var="count" value="${count+1}"></c:set>
+
+            </c:forEach>
         </c:if>
-        <c:if test="${errorNotificationLast==true}">
 
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert1">
-                <strong>${notificationsLast.type}!</strong> ${notificationsLast.message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-        </c:if>
-        <c:if test="${errorNotificationDate==true}">
-
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert2">
-                <strong>${notificationsDate.type}!</strong> ${notificationsDate.message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-        </c:if>
 
     <!-- FORMS -->
             <div class="form-group ${errorFirst}">
@@ -228,7 +217,7 @@
 <!-- FOR ALERTS -->
 <!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
 <script>
-    $("#error-alert").fadeTo(3000, 500).slideUp(500);
+    $("#error-alert0").fadeTo(3000, 500).slideUp(500);
     $("#error-alert1").fadeTo(3000, 500).slideUp(500);
     $("#error-alert2").fadeTo(3000, 500).slideUp(500);
 
