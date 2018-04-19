@@ -11,26 +11,25 @@
 </head>
 
 <body>
+
     <!-- INCLUDE NAVBAR -->
     <%@include file="_navbar.jsp"%>
 
 <!-- NOTIFICATIONS EDIT, SUCCESS, SAVE -->
 <c:if test="${successMessage==true}">
 
-    <div class="alert alert-success alert-dismissible fade show" role="alert" id="success-alert" name="success-alert">
-        <strong>${notificationsSuccess.type}!</strong> ${notificationsSuccess.message}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
 
+    <script>
+        createNotification("${notificationsSuccess.type}","${notificationsSuccess.message}","${notificationsSuccess.timer}",0)
+    </script>
 </c:if>
 <!-- NOTIFICATIONS NO RESULTS FOR SEARCH -->
 <c:if test="${resultSize==0}">
 
-    <div class="alert alert-warning" role="alert">
-        <strong>We're sorry!</strong> No results found.
-    </div>
+    <c:set value="false" var="control"></c:set>
+    <script>
+        createNotification("${notifications.type}","${notifications.message}","${notifications.timer}",0)
+    </script>
 
 </c:if>
 <div class="container-fluid">
@@ -170,7 +169,7 @@
 <!-- FOR ALERTS -->
 <!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
 <script>
-    $("#success-alert").fadeTo(3000, 500).slideUp(500);
+    $("#error-alert0").fadeTo(3000, 500).slideUp(500);
 </script>
 
 

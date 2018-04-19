@@ -1,13 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: SI2001
-  Date: 12/04/2018
-  Time: 12:37
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,23 +15,22 @@
 
 <div class="container-fluid">
 
+
     <div class="well lead"><b>User Registration Form</b></div>
-    <form:form modelAttribute="user" method="POST" class="form-horizontal">
+    <form:form modelAttribute="user" method="POST" class="form-horizontal" id="formRegistration">
         <form:input path="id" id="id" type="hidden"></form:input>
 
         <!-- NOTIFICATIONS LIST -->
 
         <c:if test="${errorNotification==true}">
+            <c:set value="false" var="control"></c:set>
             <c:set var="count" value="0"></c:set>
 
+        <!-- CHIAMO FUNZIONE JAVASCRIPT NELL'HEADER -->
             <c:forEach items="${notificationsList}" var="notificationsList">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert${count}">
-                    <strong>${notificationsList.type}!</strong> ${notificationsList.message}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
+                <script>
+                    createNotification("${notificationsList.type}","${notificationsList.message}","${notificationsList.timer}","${count}")
+                </script>
                 <c:set var="count" value="${count+1}"></c:set>
 
             </c:forEach>
@@ -134,11 +126,11 @@
                 or <a href="<c:url value="/" />" class="alert-link">Back</a>
             </c:otherwise>
         </c:choose>
-
+        <div>
+            * Fields are mandatory
+        </div>
     </form:form>
-    <div>
-        * Fields are mandatory
-    </div>
+
 </div>
 
 <script>

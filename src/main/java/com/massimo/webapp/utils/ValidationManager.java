@@ -35,8 +35,9 @@ public class ValidationManager {
                     modelMap.addAttribute("errorFirst", "has-danger");
 
                     //NOTIFICATIONS
-                    notificationsFirst.setType(NotificationType.ERROR.toString());
+                    notificationsFirst.setType(NotificationType.danger.toString());
                     notificationsFirst.setMessage("Please control the form! errors on Firstname");
+                    notificationsFirst.setTimer(3000);
                     //modelMap.addAttribute("notificationsFirst", notificationsFirst);
 
                     //AGGIUNGO A LISTA
@@ -51,8 +52,9 @@ public class ValidationManager {
                     modelMap.addAttribute("errorLast", "has-danger");
 
                     //NOTIFICATIONS
-                    notificationsLast.setType(NotificationType.ERROR.toString());
+                    notificationsLast.setType(NotificationType.danger.toString());
                     notificationsLast.setMessage("Please control the form! errors on Lastname");
+                    notificationsLast.setTimer(3000);
                     //modelMap.addAttribute("notificationsLast", notificationsLast);
 
                     //AGGIUNGO A LISTA
@@ -67,8 +69,9 @@ public class ValidationManager {
                     modelMap.addAttribute("errorBirthDate", "has-danger");
 
                     //NOTIFICATIONS
-                    notificationsDate.setType(NotificationType.ERROR.toString());
+                    notificationsDate.setType(NotificationType.danger.toString());
                     notificationsDate.setMessage("Please control the form! errors on Date");
+                    notificationsDate.setTimer(3000);
                     //modelMap.addAttribute("notificationsDate", notificationsDate);
 
                     //AGGIUNGO A LISTA
@@ -83,8 +86,9 @@ public class ValidationManager {
 
     public static void validateFile(ModelMap modelMap){
         Notifications notifications = new Notifications();
-        notifications.setType(NotificationType.ERROR.toString());
+        notifications.setType(NotificationType.danger.toString());
         notifications.setMessage("File cannot be empty");
+        notifications.setTimer(3000);
         modelMap.addAttribute("notifications", notifications);
         modelMap.addAttribute("errorFile", true);
         modelMap.addAttribute("error", "has-danger");
@@ -92,7 +96,10 @@ public class ValidationManager {
 
     public static void controlOperationAndNotify(String operation, RedirectAttributes redirectAttributes){
         Notifications notifications = new Notifications();
-        notifications.setType(NotificationType.SUCCESS.toString());
+        notifications.setType(NotificationType.success.toString());
+        notifications.setTimer(3000);
+        //List<Notifications> notificationsListSuccess = new ArrayList<>();
+
         if(operation.equalsIgnoreCase("insertUser")){
             notifications.setMessage("User added succesfully!");
         }
@@ -112,8 +119,16 @@ public class ValidationManager {
             notifications.setMessage("Document edited succesfully!");
 
         }
+        //notificationsListSuccess.add(notifications);
         redirectAttributes.addFlashAttribute("successMessage", true);
         redirectAttributes.addFlashAttribute("notificationsSuccess", notifications);
     }
 
+    public static void validateSearch(ModelMap modelMap) {
+        Notifications notifications = new Notifications();
+        notifications.setType(NotificationType.warning.toString());
+        notifications.setMessage("We are sorry, no results found!");
+        notifications.setTimer(3000);
+        modelMap.addAttribute("notifications", notifications);
+    }
 }

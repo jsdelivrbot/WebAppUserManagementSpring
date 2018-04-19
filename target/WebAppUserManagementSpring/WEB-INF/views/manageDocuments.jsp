@@ -22,8 +22,8 @@
             <form:form method="POST" modelAttribute="fileBucket" enctype="multipart/form-data" class="form-horizontal">
 
                 <c:if test="${errorFile}" var="errorFile">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error-alert">
-                        <strong>${notifications.type}!</strong> ${notifications.message}
+                    <div class="alert alert-${notifications.type} alert-dismissible fade show" role="alert" id="error-alert">
+                        ${notifications.message}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

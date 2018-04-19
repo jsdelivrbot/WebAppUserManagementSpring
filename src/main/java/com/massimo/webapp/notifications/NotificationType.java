@@ -1,10 +1,10 @@
 package com.massimo.webapp.notifications;
 
 public enum NotificationType {
-    INFO,
-    ERROR,
-    WARNING,
-    SUCCESS;
+    info,
+    danger,
+    warning,
+    success;
 
     String notifcationType;
 
