@@ -35,10 +35,9 @@ public class ValidationManager {
                     modelMap.addAttribute("errorFirst", "has-danger");
 
                     //NOTIFICATIONS
-                    notificationsFirst.setType(NotificationType.danger.toString());
+                    notificationsFirst.setType(NotificationType.DANGER.getStatus().toString());
                     notificationsFirst.setMessage("Please control the form! errors on Firstname");
-                    notificationsFirst.setTimer(3000);
-                    //modelMap.addAttribute("notificationsFirst", notificationsFirst);
+
 
                     //AGGIUNGO A LISTA
                     notificationsList.add(notificationsFirst);
@@ -48,14 +47,12 @@ public class ValidationManager {
 
             if(fieldError.getField().equals("lastname"))
                 if(addedLast==false) {
-                    //modelMap.addAttribute("errorNotification", true);
+
                     modelMap.addAttribute("errorLast", "has-danger");
 
                     //NOTIFICATIONS
-                    notificationsLast.setType(NotificationType.danger.toString());
+                    notificationsLast.setType(NotificationType.DANGER.getStatus().toString());
                     notificationsLast.setMessage("Please control the form! errors on Lastname");
-                    notificationsLast.setTimer(3000);
-                    //modelMap.addAttribute("notificationsLast", notificationsLast);
 
                     //AGGIUNGO A LISTA
                     notificationsList.add(notificationsLast);
@@ -69,10 +66,8 @@ public class ValidationManager {
                     modelMap.addAttribute("errorBirthDate", "has-danger");
 
                     //NOTIFICATIONS
-                    notificationsDate.setType(NotificationType.danger.toString());
+                    notificationsDate.setType(NotificationType.DANGER.getStatus().toString());
                     notificationsDate.setMessage("Please control the form! errors on Date");
-                    notificationsDate.setTimer(3000);
-                    //modelMap.addAttribute("notificationsDate", notificationsDate);
 
                     //AGGIUNGO A LISTA
                     notificationsList.add(notificationsDate);
@@ -86,9 +81,8 @@ public class ValidationManager {
 
     public static void validateFile(ModelMap modelMap){
         Notifications notifications = new Notifications();
-        notifications.setType(NotificationType.danger.toString());
+        notifications.setType(NotificationType.DANGER.getStatus().toString());
         notifications.setMessage("File cannot be empty");
-        notifications.setTimer(3000);
         modelMap.addAttribute("notifications", notifications);
         modelMap.addAttribute("errorFile", true);
         modelMap.addAttribute("error", "has-danger");
@@ -96,9 +90,7 @@ public class ValidationManager {
 
     public static void controlOperationAndNotify(String operation, RedirectAttributes redirectAttributes){
         Notifications notifications = new Notifications();
-        notifications.setType(NotificationType.success.toString());
-        notifications.setTimer(3000);
-        //List<Notifications> notificationsListSuccess = new ArrayList<>();
+        notifications.setType(NotificationType.SUCCESS.getStatus().toString());
 
         if(operation.equalsIgnoreCase("insertUser")){
             notifications.setMessage("User added succesfully!");
@@ -119,16 +111,19 @@ public class ValidationManager {
             notifications.setMessage("Document edited succesfully!");
 
         }
-        //notificationsListSuccess.add(notifications);
         redirectAttributes.addFlashAttribute("successMessage", true);
         redirectAttributes.addFlashAttribute("notificationsSuccess", notifications);
     }
 
-    public static void validateSearch(ModelMap modelMap) {
+    public static void validateSearch(ModelMap modelMap, int resultSize) {
         Notifications notifications = new Notifications();
-        notifications.setType(NotificationType.warning.toString());
-        notifications.setMessage("We are sorry, no results found!");
-        notifications.setTimer(3000);
+        if(resultSize>0){
+            notifications.setMessage("Search returned "+ resultSize + " results");
+        }else{
+            notifications.setType(NotificationType.WARNING.getStatus().toString());
+            notifications.setMessage("We are sorry, no results found!");
+        }
+
         modelMap.addAttribute("notifications", notifications);
     }
 }

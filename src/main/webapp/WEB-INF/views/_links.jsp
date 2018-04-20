@@ -4,7 +4,8 @@
 
 <!-- BOOTSTRAP MATERIAL DESIGN -->
 <link rel="stylesheet" href="https://cdn.rawgit.com/FezVrasta/bootstrap-material-design/dist/dist/bootstrap-material-design.min.css">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <!-- NOTIFICATION SERVICE LATO CLIENT -->
 <script>
     function createNotification(type, message, timer, count){
@@ -35,15 +36,10 @@
 
         console.log(type,message,timer,count);
 
-        $("#error-alert"+count).fadeTo(timer, 500).slideUp(500);
+        var parsedTimer = parseInt(timer);
+        $(div).fadeTo(parsedTimer, 500).slideUp(500);
 
 
     }
 
-<!-- FUNCTION PER NASCONDERE IL TASTO CLEAR -->
-
-    function hideClear(){
-        var btnClear = document.getElementById("clearBtn");
-        btnClear.remove();
-    }
 </script>

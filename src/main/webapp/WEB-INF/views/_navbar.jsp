@@ -4,6 +4,11 @@
         <li class="nav-item active">
             <a class="nav-link" href="<c:url value="/newUser" />"><button class="btn btn-outline-info"> Add New User</button></a>
         </li>
+        <!-- BUTTON FOR GENERATE NOTIFIERS -->
+        <li class="nav-item active">
+            <a class="nav-link"><button class="btn btn-outline-warning" onclick="createNotification('info','more than one notify',3000,0)"> Notify Me!</button></a>
+
+        </li>
     </ul>
 
     <c:url var="searchUrl" value="/users"/>
@@ -15,9 +20,7 @@
             <input type="submit" class="btn btn-outline-info" value="Search">
 
         </form:form>
-        <c:if test="${reset==true}">
-            <a href="/"> <button class="btn btn-outline-danger" value="Clear" name="clearBtn" id="clearBtn" onclick="hideClear()">Clear</button></a>
-        </c:if>
+
         </span>
 
 

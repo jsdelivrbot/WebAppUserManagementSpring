@@ -23,14 +23,12 @@
         createNotification("${notificationsSuccess.type}","${notificationsSuccess.message}","${notificationsSuccess.timer}",0)
     </script>
 </c:if>
-<!-- NOTIFICATIONS NO RESULTS FOR SEARCH -->
-<c:if test="${resultSize==0}">
 
-    <c:set value="false" var="control"></c:set>
+<!-- NOTIFICATIONS RESULTS FOR SEARCH -->
+<c:if test="${reset==true}">
     <script>
         createNotification("${notifications.type}","${notifications.message}","${notifications.timer}",0)
     </script>
-
 </c:if>
 <div class="container-fluid">
     <div class="panel panel-default">
@@ -52,6 +50,7 @@
             <th>File</th>
         </tr>
     </thead>
+
     <tbody>
 
         <c:forEach items="${users}" var="user">
@@ -132,7 +131,13 @@
 </table>
     </div>
 
+    <!-- RETURN TO HOME AFTER SEARCH -->
+    <c:if test="${reset==true}">
 
+        <div align="center">
+            <a href="<c:url value="/"/> " class="alert-link">Back</a>
+        </div>
+    </c:if>
 
 
 </div>
@@ -165,13 +170,6 @@
 
 <!-- INCLUDE SCRIPTS -->
 <%@include file="_scriptsFooter.jsp"%>
-
-<!-- FOR ALERTS -->
-<!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
-<script>
-    $("#error-alert0").fadeTo(3000, 500).slideUp(500);
-</script>
-
 
 </body>
 </html>

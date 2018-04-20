@@ -207,13 +207,6 @@
 <!-- INCLUDE SCRIPTS -->
 <%@include file="_scriptsFooter.jsp"%>
 
-<!-- FOR ALERTS -->
-<!-- fadeTo dice dopo quanto deve andare via e in che opacità, mentre slideUp definisce la velocità di sliding -->
-<script>
-    $("#error-alert0").fadeTo(3000, 500).slideUp(500);
-    $("#error-alert1").fadeTo(3000, 500).slideUp(500);
-    $("#error-alert2").fadeTo(3000, 500).slideUp(500);
 
-</script>
 </body>
 </html>

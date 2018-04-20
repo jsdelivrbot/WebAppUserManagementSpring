@@ -3,7 +3,7 @@ package com.massimo.webapp.notifications;
 public class Notifications {
 
     private String message;
-    private String type = NotificationType.info.getNotifcationType();
+    private String type = NotificationType.INFO.getStatus().toString();
     private int timer;
 
     public Notifications(String message, String type, int timer) {
@@ -11,9 +11,10 @@ public class Notifications {
         this.type = type;
         this.timer = timer;
     }
-
     public Notifications() {
+        this.timer = 3000;
     }
+
 
     public String getMessage() {
         return message;

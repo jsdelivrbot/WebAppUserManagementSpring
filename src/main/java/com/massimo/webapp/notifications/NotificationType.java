@@ -1,18 +1,19 @@
 package com.massimo.webapp.notifications;
 
 public enum NotificationType {
-    info,
-    danger,
-    warning,
-    success;
+    INFO("info"),
+    DANGER("danger"),
+    WARNING("warning"),
+    SUCCESS("success");
 
-    String notifcationType;
+    private final String status; // stores the data
 
-    public String getNotifcationType() {
-        return notifcationType;
+    private NotificationType(String status) {  // <== private constuctor
+        this.status = status;
     }
 
-    public void setNotifcationType(String notifcationType) {
-        this.notifcationType = notifcationType;
+    public String getStatus() {  // <== allow access to the data
+        return status;
     }
 }
+

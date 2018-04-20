@@ -178,7 +178,7 @@ public class AppController {
 
        List<User> users = userService.searchUsers(search);
 
-       ValidationManager.validateSearch(modelMap);
+       ValidationManager.validateSearch(modelMap,users.size());
        modelMap.addAttribute("users", users);
        modelMap.addAttribute("reset", true);
        modelMap.addAttribute("resultSize", users.size());
